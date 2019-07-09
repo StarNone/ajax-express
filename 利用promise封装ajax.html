@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script src="./axios.js"></script>
+<script>
+    let path = "http://m.yaojunrong.com/book";
+    // axios.get("http://m.yaojunrong.com/book").then(res=>{
+    //     console.log(res);
+    // })
+
+    function myAjax() {
+        return {
+            get(url){
+                return new Promise((resolve,reject)=>{
+                    let xhr = null;
+                    if(window.XMLHttpRequest){
+                        xhr = new XMLHttpRequest();
+                    }else{
+                        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    xhr.open("GET",url);
+                    xhr.onreadystatechange = function(){
+                        if(xhr.readyState == 4 &&xhr.status == 200){
+                            let data = JSON.parse(xhr.response);
+                            resolve(data);
+                        } else if(xhr.readyState == 4 && xhr.status > 400){
+                            resolve(xhr.status);
+                        }
+                            
+                    }
+                    xhr.send();
+                })
+            }
+        }
+    }
+    myAjax().get(path).then(res=>{
+        console.log(res);
+    })
+</script>
+</html>

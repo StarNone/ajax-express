@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn">发送post请求</button>
+</body>
+<script>
+    // console.log("111")
+    // var xhr = new ActiveXObject("Microsoft.XMLHTTP");
+    // xhr.open("GET","get");
+    // xhr.onreadystatechange = function(){
+    //     if(xhr.readyState == 4 && xhr.stateus == 200){
+    //         console.log(xhr.response)
+    //     }
+    // }
+    // xhr.send();
+    var btn = document.getElementById("btn")
+    function ajax(opt) {
+        opt.type = opt.type || "GET";
+        opt.async = opt.async || "true"
+        var xhr = null;
+        if(window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+        } else {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP")
+        }
+        xhr.open(opt.type,opt.url,opt.async);
+        if(xhr.type == "POST"){
+            xhr.setRequestHeader("Content-Type","x-www-form-urlencoded")
+        }
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState == 4 && xhr.status == 200){
+                opt.success(JSON.parse(xhr.response))
+            }
+        }
+        xhr.send()
+    }  
+    ajax({
+        url: "https://m.yaojunrong.com/book",
+        success(res){
+            console.log(res)
+        }
+    })  
+    btn.onclick = function(){
+        ajax({
+            url:"/post",
+            type:"POST",
+            success(res){
+                console.log(res)
+            }
+        })
+    }
+</script>
+</html>

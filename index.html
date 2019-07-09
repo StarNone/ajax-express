@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./reset.css">
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <ul class="list">
+
+    </ul>
+</body>
+<script>
+    var ul = document.querySelector(".list")
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://didi.yaojunrong.com/api/article/get", true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            let res = JSON.parse(xhr.response);
+            let str = ""
+            res.data.forEach(item => {
+                let date = new Date(item.createtime*1000);
+                let year = date.getFullYear();
+                let month = date.getMonth() + 1;
+                let day = date.getDate();
+                let formatTime = `${year}-${month}-${day}`;           
+                let template = `
+                    <li class="item">
+                        <a href="details.html?id=${item.id}">
+                            <h2>${item.title}</h2>
+                            <div>
+                                <span class="author">${item.author}</span>
+                                <span class="time">${formatTime}</span>
+                            </div>
+                        </a>
+                    </li>`
+                str+=template;
+            });
+            console.log(str);
+            ul.innerHTML = str;
+        }
+    }
+    xhr.send();
+</script>
+
+</html>
